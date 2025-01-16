@@ -1,4 +1,4 @@
-require('dotenv').config() // .env dosyasını yükler
+require('dotenv').config() 
 const { Sequelize } = require('sequelize');
 
 // Veritabanı bağlantı ayarları
