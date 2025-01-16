@@ -3,7 +3,12 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
 
-class StudentCourse extends Model {}
+class StudentCourse extends Model {
+    static associate(models) {
+        StudentCourse.belongsTo(models.Student, { foreignKey: 'studentId' });
+        StudentCourse.belongsTo(models.Course, { foreignKey: 'courseId' });
+    }
+}
 
 StudentCourse.init({
   id: {
