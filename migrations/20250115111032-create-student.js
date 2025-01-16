@@ -16,7 +16,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       classId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Class',
+          key:'id'
+        }
+        
       },
       studentNo: {
         type: Sequelize.INTEGER,
@@ -29,6 +34,16 @@ module.exports = {
       },
       accesToken: {
         type: Sequelize.STRING
+      },
+      createdAt: {
+        type: Sequelize.DATE, // createdAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
+      },
+      updatedAt: {
+        type: Sequelize.DATE, // updatedAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
       }
     });
   },

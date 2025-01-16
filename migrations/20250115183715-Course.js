@@ -17,17 +17,22 @@ module.exports = {
           model:'Teachers',
           key:'id'
         }
+      },
+      createdAt: {
+        type: Sequelize.DATE, // createdAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
+      },
+      updatedAt: {
+        type: Sequelize.DATE, // updatedAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
       }
     });
 
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+   await queryInterface.dropTable('users');
   }
 };

@@ -21,6 +21,16 @@ module.exports = {
         references: {
           model: 'Class',
           key: 'id'
+        },
+        createdAt: {
+          type: Sequelize.DATE, // createdAt sütunu
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
+        },
+        updatedAt: {
+          type: Sequelize.DATE, // updatedAt sütunu
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
         }
       }
     });

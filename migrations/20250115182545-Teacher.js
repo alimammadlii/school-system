@@ -27,6 +27,16 @@ module.exports = {
       },
       accesToken: {
         type: Sequelize.STRING
+      },
+      createdAt: {
+        type: Sequelize.DATE, // createdAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
+      },
+      updatedAt: {
+        type: Sequelize.DATE, // updatedAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
       }
     })
   },

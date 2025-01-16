@@ -1,25 +1,11 @@
 require('dotenv').config() // .env dosyasını yükler
+const { Sequelize } = require('sequelize');
 
-module.exports = {
-  development: {
-    username: process.env.DB_USERNAME, 
-    password: process.env.DB_PASSWORD, 
-    database: process.env.DB_DATABASE,     
-    host: process.env.DB_HOST || '127.0.0.1', 
-    dialect: process.env.DB_DIALECT || 'postgres', 
-  },
-  test: {
-    username: process.env.DB_USERNAME || 'test_user',
-    password: process.env.DB_PASSWORD || 'test_password',
-    database: process.env.DB_DATABASE || 'test_db',
-    host: process.env.DB_HOST || '127.0.0.1',
-    dialect: process.env.DB_DIALECT || 'postgres',
-  },
-  production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT || 'postgres',
-  },
-}
+// Veritabanı bağlantı ayarları
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'posgres', 
+  logging: false 
+});
+
+module.exports = sequelize;

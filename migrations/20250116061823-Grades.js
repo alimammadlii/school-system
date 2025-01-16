@@ -26,6 +26,16 @@ module.exports = {
       },
       grade: {
         type: Sequelize.INTEGER
+      },
+      createdAt: {
+        type: Sequelize.DATE, // createdAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
+      },
+      updatedAt: {
+        type: Sequelize.DATE, // updatedAt sütunu
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'), // Varsayılan olarak güncel zaman
       }
 
     });

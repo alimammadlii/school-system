@@ -3,27 +3,25 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
 
-class Student extends Model {}
+class Course extends Model {}
 
-Student.init({
+Course.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
-    unique: true,
     autoIncrement: true
   },
-  tc: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true
-  },
-  password: {
+  courseName: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  accesToken: {
-    type: DataTypes.STRING
+  teacherId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Teachers',
+      key: 'id'
+    }
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -37,9 +35,9 @@ Student.init({
   }
 }, {
   sequelize,
-  modelName: 'Student',
-  tableName: 'Students',
+  modelName: 'Course',
+  tableName: 'Courses',
   timestamps: true
 });
 
-module.exports = Student;
+module.exports = Course;
