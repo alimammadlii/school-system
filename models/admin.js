@@ -1,40 +1,45 @@
 'use strict';
 
-module.exports = (sequelize, DataTypes) => {
-  const Admin = sequelize.define(
-    'Admin', 
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      tc: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      accessToken: {
-        type: DataTypes.STRING,
-      },
-    },
-    {
-      tableName: 'Admins', 
-      timestamps: true,
-    }
-  );
-  return Admin;
-};
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); 
+
+class Admin extends Model {}
+
+Admin.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    unique: true,
+    autoIncrement: true
+  },
+  tc: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  accesToken: {
+    type: DataTypes.STRING
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  }
+}, {
+  sequelize,
+  modelName: 'Admin',
+  tableName: 'Admins',
+  timestamps: true
+});
+
+module.exports = Admin;
