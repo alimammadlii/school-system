@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.authorization?.split(" ")[1]; // Bearer <token> seklinde oldugu icin
   if (!token) {
     return res.status(401).json({ message: "Access token is required" });
   }
@@ -23,4 +23,13 @@ const verifyRole = (role) => (req, res, next) => {
   next();
 };
 
-module.exports = {verifyRole, verifyToken}
+const generateToken = (user, role) => {
+  return jwt.sign(
+    { id: user.id, role }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: "1h" } 
+  );
+};
+
+
+module.exports = {verifyRole, verifyToken, generateToken}

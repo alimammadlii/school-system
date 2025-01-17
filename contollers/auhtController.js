@@ -1,15 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Admin, Teacher, Student } = require("../models"); // Modeller
+const generateToken = require("../middlewares/auth")
 
-
-const generateToken = (user, role) => {
-  return jwt.sign(
-    { id: user.id, role }, 
-    process.env.JWT_SECRET, 
-    { expiresIn: "1h" } 
-  );
-};
 
 // Register işlemleri
 exports.registerAdmin = async (req, res) => {
