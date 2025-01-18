@@ -1,4 +1,4 @@
-const Student = require('../models/student')
+const {Student, Grade, Course} = require("../models")
 
 const registerStudent = async (req, res) => {
     const {firstName, lastName, studentNo, password } = req.body;
@@ -36,4 +36,54 @@ const loginStudent = async (req, res) => {
     }
 }
 
-module.exports = {registerStudent, loginStudent}
+const getStudentGrades = async (req, res) => {
+    try {
+      const { id } = req.user; //JWT
+      const grades = await Grade.findAll({
+        where: { studentId: id },
+        include: [
+          {
+            model: Course,
+            attributes: ['courseName'],
+          },
+        ],
+      });
+  
+      if (!grades.length) {
+        return res.status(404).json({ message: 'No grades found for this student' });
+      }
+  
+      res.status(200).json(grades);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+};
+
+const getStudentCourses = async (req, res) => {
+    try {
+      const { id } = req.user; //JWT
+      const student = await Student.findByPk(id, {
+        include: [
+          {
+            model: Course,
+            attributes: ['id', 'courseName', 'teacherId'],
+          },
+        ],
+      });
+  
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+  
+      res.status(200).json(student.Courses);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+};
+
+module.exports = {
+    registerStudent,
+    loginStudent,
+    getStudentGrades,
+    getStudentCourses
+}

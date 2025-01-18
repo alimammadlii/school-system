@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { Teacher } = require("../models");
+const { Teacher, Grade } = require("../models");
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -50,4 +50,67 @@ const loginTeacher = async (req, res) => {
   }
 };
 
-module.exports = {registerTeacher, loginTeacher}
+const assignGradeToStudent = async (req, res) => {
+  try {
+    const { studentId, courseId, grade } = req.body;
+
+    const student = await Student.findByPk(studentId);
+    const course = await Course.findByPk(courseId);
+
+    if (!student || !course) {
+      return res.status(404).json({ message: 'Student or Course not found' });
+    }
+
+    const newGrade = await Grade.create({
+      studentId,
+      courseId,
+      grade,
+    });
+
+    res.status(201).json({ message: 'Grade assigned successfully', newGrade });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const updateStudentGrade = async (req, res) => {
+  try {
+    const { studentId, courseId, grade } = req.body;
+
+    const gradeRecord = await Grade.findOne({ where: { studentId, courseId } });
+    if (!gradeRecord) {
+      return res.status(404).json({ message: 'Grade record not found' });
+    }
+
+    await gradeRecord.update({ grade });
+    res.status(200).json({ message: 'Grade updated successfully', gradeRecord });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getStudentGrades = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    const grades = await Grade.findAll({ where: { studentId } });
+    if (!grades.length) {
+      return res.status(404).json({ message: 'No grades found for this student' });
+    }
+
+    res.status(200).json(grades);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+module.exports = {
+  registerTeacher,
+  loginTeacher,
+  assignGradeToStudent,
+  updateStudentGrade,
+  getStudentGrades
+}
