@@ -82,8 +82,8 @@ const getStudentCourses = async (req, res) => {
 };
 
 module.exports = {
-    registerStudent,
-    loginStudent,
-    getStudentGrades,
-    getStudentCourses
+  registerStudent,
+  loginStudent,
+  getStudentGrades,
+  getStudentCourses
 }
