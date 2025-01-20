@@ -17,7 +17,7 @@ const adminAuth = async (req, res, next) => {
     const currentUser = await Admin.findOne({where: {accessToken: token}});
 
     if(currentUser) {
-        JWT.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, user) => {
+        JWT.verify(token, process.env.JWT_SECRET, (err, user) => {
 
             if (err) {
                 return res.status(401).json({

@@ -8,7 +8,7 @@ router.post("/register", controller.registerTeacher);
 router.post("/login", controller.loginTeacher);
 
 router.post("/assign-grade", teacherAuth, controller.assignGradeToStudent);
-router.post("/update-grades", teacherAuth, controller.updateStudentGrades);
+router.post("/update-grade", teacherAuth, controller.updateStudentGrade);
 router.get("/get-grades", teacherAuth, controller.getStudentGrades);
 
 module.exports = router;

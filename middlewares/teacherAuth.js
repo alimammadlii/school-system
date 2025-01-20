@@ -43,4 +43,4 @@ const teacherAuth = async (req, res, next) => {
 
 }
 
-module.exports = adminAuth;
+module.exports = teacherAuth;
