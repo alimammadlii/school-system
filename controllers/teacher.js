@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Teacher, Grade, Course, Student} = require("../models");
+const CustomError = require("../error/customError")
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -24,11 +25,11 @@ const registerTeacher = async (req, res, next) => {
 
     res.status(201).json({ message: "Teacher registered successfully", newTeacher });
   } catch (error) {
-    res.status(500).json({ message: "Error registering teacher", error });
+    next(new CustomError(err.message));
   }
 };
 
-const loginTeacher = async (req, res) => {
+const loginTeacher = async (req, res, next) => {
   const { tc, password } = req.body;
 
   try {
@@ -46,11 +47,11 @@ const loginTeacher = async (req, res) => {
     const token = generateToken(teacher);
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
-    res.status(500).json({ message: "Error logging in", error });
+    next(new CustomError(err.message));
   }
 };
 
-const assignGradeToStudent = async (req, res) => {
+const assignGradeToStudent = async (req, res, next) => {
   try {
     const { studentId, courseId, grade } = req.body;
 
@@ -69,12 +70,12 @@ const assignGradeToStudent = async (req, res) => {
 
     res.status(201).json({ message: 'Grade assigned successfully', newGrade });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(new CustomError(err.message));
   }
 };
 
 
-const updateStudentGrade = async (req, res) => {
+const updateStudentGrade = async (req, res, next) => {
   try {
     const { studentId, courseId, grade } = req.body;
 
@@ -86,12 +87,12 @@ const updateStudentGrade = async (req, res) => {
     await gradeRecord.update({ grade });
     res.status(200).json({ message: 'Grade updated successfully', gradeRecord });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(new CustomError(err.message));;
   }
 };
 
 
-const getStudentGrades = async (req, res) => {
+const getStudentGrades = async (req, res, next) => {
   try {
     const { studentId } = req.params;
 
@@ -102,7 +103,7 @@ const getStudentGrades = async (req, res) => {
 
     res.status(200).json(grades);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(new CustomError(err.message));
   }
 };
 

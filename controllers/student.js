@@ -1,6 +1,7 @@
 const {Student, Grade, Course} = require("../models")
+const CustomError = require('../error/customError');
 
-const registerStudent = async (req, res) => {
+const registerStudent = async (req, res, next) => {
     const {firstName, lastName, studentNo, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -12,11 +13,11 @@ const registerStudent = async (req, res) => {
         })
         res.status(201).json({message: "Yeni ogrenci olusturuldu"})
     } catch (err) {
-        res.status(500).json({message: err})
+      next(new CustomError(err.message));
     }
 }
 
-const loginStudent = async (req, res) => {
+const loginStudent = async (req, res, next) => {
     const {studentNo, password} = req.body;
     try {
         user = await Student.findOne({where : {studentNo: studentNo}})
@@ -25,18 +26,18 @@ const loginStudent = async (req, res) => {
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid password" });
+          next(new CustomError(err.message));
         }
     
         // Token oluştur
         const token = generateToken(user, role);
         res.status(200).json({ message: "Login successful", token });
     }catch (err) {
-        res.status(500).json({message:err})
+      next(new CustomError(err.message));
     }
 }
 
-const getStudentGrades = async (req, res) => {
+const getStudentGrades = async (req, res, next) => {
     try {
       const { id } = req.user; //JWT
       const grades = await Grade.findAll({
@@ -55,11 +56,11 @@ const getStudentGrades = async (req, res) => {
   
       res.status(200).json(grades);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(new CustomError(err.message));
     }
 };
 
-const getStudentCourses = async (req, res) => {
+const getStudentCourses = async (req, res, next) => {
     try {
       const { id } = req.user; //JWT
       const student = await Student.findByPk(id, {
@@ -77,7 +78,7 @@ const getStudentCourses = async (req, res) => {
   
       res.status(200).json(student.Courses);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(new CustomError(err.message));
     }
 };
 
