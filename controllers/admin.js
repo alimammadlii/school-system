@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Admin, Class, Teacher, Student } = require("../models");
+const CustomError = require('../error/customError')
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -24,11 +25,11 @@ const registerAdmin = async (req, res, next) => {
 
     res.status(201).json({ message: "Admin registered successfully", admin: newAdmin });
   } catch (error) {
-    res.status(500).json({ message: "Error registering admin", error });
+    next(new CustomError("Error registering admin"));
   }
 };
 
-const loginAdmin = async (req, res) => {
+const loginAdmin = async (req, res, next) => {
   const { tc, password } = req.body;
 
   try {
@@ -46,122 +47,122 @@ const loginAdmin = async (req, res) => {
     const token = generateToken(admin);
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
-    res.status(500).json({ message: "Error logging in", error });
+    next(new CustomError("Error logging in"));
   }
 };
 
-const createClass = async (req, res) => {
+const createClass = async (req, res, next) => {
   try {
     const newClass = await Class.create(req.body);
     res.status(201).json(newClass);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
-const deleteClass = async (req, res) => {
+const deleteClass = async (req, res, next) => {
   try {
     const { classID } = req.params 
     await Class.destroy({where: {id : classID}})
     return res.status(200).json({message: 'Class deleted succesfully'})
   } catch(err) {
-    res.status(500).json({message : err.message})
+    next(new CustomError(err.message))
   }
 }
-const updateClass = async (req, res) => {
+const updateClass = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedClass = await Class.update(req.body, { where: { id } });
     res.status(200).json(updatedClass);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
 
-const createTeacher = async (req, res) => {
+const createTeacher = async (req, res, next) => {
   try {
     const newTeacher = await Teacher.create(req.body);
     res.status(201).json(newTeacher);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
-const updateTeacher = async (req, res) => {
+const updateTeacher = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedTeacher = await Teacher.update(req.body, { where: { id } });
     res.status(200).json(updatedTeacher);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
-const deleteTeacher = async (req, res) => {
+const deleteTeacher = async (req, res, next) => {
   try {
     const { id } = req.params;
     await Teacher.destroy({ where: { id } });
     res.status(200).json({ message: 'Teacher deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
 
-const createStudent = async (req, res) => {
+const createStudent = async (req, res, next) => {
   try {
     const newStudent = await Student.create(req.body);
     res.status(201).json(newStudent)
   } catch(err) {
-    res.status(500).json({message: err.message})
+    next(new CustomError(err.message));
   }
 }
-const updateStudent = async (req, res) => {
+const updateStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedStudent = await Student.update(req.body, { where: { id } });
     res.status(200).json(updatedStudent);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
-const deleteStudent = async (req, res) => {
+const deleteStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
     await Student.destroy({ where: { id } });
     res.status(200).json({ message: 'Student deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError(err.message));
   }
 };
 
-const createCourse = async (req, res) => {
+const createCourse = async (req, res, next) => {
   try {
     const newCourse = await Student.create(req.body);
     res.status(201).json(newCourse)
   } catch(err) {
-    res.statud(500).json({message: err})
+    next(new CustomError(err.message));
   } 
 }
 
-const updateCourse = async (req, res) => {
+const updateCourse = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedCourse = await Course.update(req.body, { where: { id } });
     res.status(200).json(updatedCourse);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError());
   }
 };
 
-const deleteCourse = async (req, res) => {
+const deleteCourse = async (req, res, next) => {
   try {
     const { id } = req.params;
     await Course.destroy({ where: { id } });
     res.status(200).json({ message: 'Course deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(new CustomError());
   }
 };
 
