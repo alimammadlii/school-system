@@ -14,7 +14,9 @@ module.exports = {
       teacherId: {
         type:Sequelize.INTEGER,
         references: {
-          model:'Teachers',
+          model: {
+            tableName: 'Teachers'
+          },
           key:'id'
         }
       },

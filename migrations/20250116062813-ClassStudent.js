@@ -12,14 +12,18 @@ module.exports = {
       studentId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Student',
+          model: {
+            tableName:'Students'
+          },
           key: 'id',
         }
       },
       classId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Class',
+          model: {
+            tableName:'Classes'
+          },
           key: 'id'
         },
         createdAt: {
@@ -37,6 +41,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('ClassStudents');
   }
 };

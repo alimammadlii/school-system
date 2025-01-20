@@ -13,14 +13,18 @@ module.exports = {
       courseId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Course',
+          model: {
+            tableName:'Courses'
+          },
           key: 'id'
         }
       },
       studentId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Student',
+          model: {
+            tableName: 'Students'
+          },
           key:'id'
         }
       }
