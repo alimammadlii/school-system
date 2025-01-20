@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { Teacher, Grade } = require("../models");
+const { Teacher, Grade, Course, Student} = require("../models");
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -15,16 +15,16 @@ const registerTeacher = async (req, res, next) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newTeacher = await Admin.create({
+    const newTeacher = await Teacher.create({
       firstName,
       lastName,
       tc,
       password: hashedPassword,
     });
 
-    res.status(201).json({ message: "Admin registered successfully", newTeacher });
+    res.status(201).json({ message: "Teacher registered successfully", newTeacher });
   } catch (error) {
-    res.status(500).json({ message: "Error registering admin", error });
+    res.status(500).json({ message: "Error registering teacher", error });
   }
 };
 
